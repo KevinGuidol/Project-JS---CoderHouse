@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#divBotones {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 50px;
+    width: 100%;
+    margin-top: 100px;
+}
+
+.botonModo {
+    height:auto;
+    width: auto;
+    background-color: blue;
+    text-decoration-color: white;
+    border-style: solid;
+    border-color: black;
+    border-radius: 25px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.botonModo h2 {
+    height: 40px;
+    width: 400px;
+    padding: 10px ;
+}
