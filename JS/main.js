@@ -51,8 +51,10 @@ if (entradaModo === true) {
 } else {
 
     //Entrando al Modo Comprador
-
-    let dineroDisponible = parseFloat(prompt("¿Cuánto dinero puedes gastar?"));
+    let dineroDisponible
+    do {
+        dineroDisponible = parseFloat(prompt("¿Cuánto dinero puedes gastar?"));
+        }while(dineroDisponible !== parseFloat(dineroDisponible))
     let cuponDescuento = "D612"
 
     alert("Bienvenido " + nombreUsuario + " " + apellidoUsuario + " a Tienda de Electrodomésticos. \n \n A continuación te presentaremos el catálogo de nuestra tienda, pero primero, si tienes un cupón de descuento, ingresalo.");
@@ -109,9 +111,18 @@ if (entradaModo === true) {
     }
     //Se restar el precio del producto al precio total.
     function eliminarProducto(nombreProd, precioProd) {
-        sumaTotal -= precioProd;
-        alert("Eliminaste " + nombreProd + " del carrito.\n\nEl subtotal es de $" + sumaTotal);
-    }//Busca el código introducido en el array listaProductos y devuelve el valor del precio del mismo.
+        if (nombreProd !== undefined || precioProd !== NaN) {
+            sumaTotal -= precioProd;
+            const indiceAEliminar = carrito.findIndex((productoCarrito)=> {
+                return productoCarrito.nombre === nombreProd;
+            });
+            carrito.splice(indiceAEliminar, 1);
+            alert("Eliminaste " + nombreProd + " del carrito.\n\nEl subtotal es de $" + sumaTotal);
+        }else {
+            alert("El código ingresado es incorrecto o el producto ya fue eliminado.")
+        }
+    }
+    //Busca el código introducido en el array listaProductos y devuelve el valor del precio del mismo.
     function encontrarPrecioProducto(codigo) {
         const productoEncontrado = listaProductos.find((producto) => producto.id === codigo);
         if (productoEncontrado) {
@@ -184,15 +195,25 @@ if (entradaModo === true) {
     } while (entrada !== "CONFIRMAR");
 
     // Mostrar el total de la compra con descuento aplicado y el último producto agregado
-    total = sumaTotal * descuento;
-    alert("El total de tu compra es de $" + total.toFixed(2));
+    sumaTotal = sumaTotal * descuento;
+    alert("El total de tu compra es de $" + sumaTotal.toFixed(2));
+    function dineroSuficiente () {
+        if (sumaTotal < dineroDisponible) {
+            alert("Felicidades, compraste :\n\n" + mostrarProductosEnCarrito());
+        }else {
+        alert("Su compra ha sido interrumpida");
+        }
+    }
     do {
-        if (total > dineroDisponible) {
+        if (sumaTotal > dineroDisponible) {
+            while (sumaTotal > dineroDisponible){
             alert("Lo sentimos, no tienes suficiente dinero para realizar la compra");
-            let codigo = prompt("Ingrese el código del producto que quiera eliminar \n\n" + mostrarProductosEnCarrito()).toUpperCase();
+            let codigo = prompt("Ingrese el código del producto que quiera eliminar \nPrecio total de la compra:" + sumaTotal + "\nDinero:" + dineroDisponible + "\n\n" + mostrarProductosEnCarrito()).toUpperCase();
             eliminarProducto(encontrarNombreProducto(codigo),encontrarPrecioProducto(codigo));
+            }
         }else {
             alert("Felicidades, compraste :\n\n" + mostrarProductosEnCarrito());
         }
-    } while (total > dineroDisponible)
-}
+    } while (sumaTotal > dineroDisponible)
+        dineroSuficiente ();
+}alert("¡Gracias por utilizar nuestros servicios!")
