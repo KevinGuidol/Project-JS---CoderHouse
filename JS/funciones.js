@@ -32,11 +32,58 @@ const listaProductos = [
     { nombre: "Xbox Series X", id: "E3", precio: 1273999 ,categoria: "Consolas", ruta: "../assets/products/E3.jpg"},
     { nombre: "Sony Playstation 5 1TB", id: "E4", precio: 1258700 ,categoria: "Consolas", ruta: "../assets/products/E4.jpg"}
 ];
-
+//Divisiones de array por categorías de productos
 listaProductosHeladeras = listaProductos.filter(producto => producto.categoria === "Heladeras")
 listaProductosTelevisores = listaProductos.filter(producto => producto.categoria === "Televisores")
 listaProductosLavarropas = listaProductos.filter(producto => producto.categoria === "Lavarropas")
 listaProductosParlantes = listaProductos.filter(producto => producto.categoria === "Parlantes")
 listaProductosConsolas = listaProductos.filter(producto => producto.categoria === "Consolas")
 
-contenedor = document.getElementById("main")
+const contenedorHeladeras = document.getElementById("carretelMostradorHeladeras")
+const contenedorTelevisores = document.getElementById("carretelMostradorTelevisores")
+const contenedorLavarropas = document.getElementById("carretelMostradorLavarropas")
+const contenedorParlantes = document.getElementById("carretelMostradorParlantes")
+const contenedorConsolas = document.getElementById("carretelMostradorConsolas")
+const contenedorCarrito = document.getElementById("contenidoCarrito")
+
+
+function agregarProducto(id) {
+    const producto = listaProductos.find(item => item.id === id);
+    const carrito = cargarCarritoLS();
+    
+    // Generar un nuevo ID para el producto
+    const nuevoId = generarId(carrito);
+    const nuevoProducto = { ...producto, id: nuevoId };
+    
+    carrito.push(nuevoProducto);
+    
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+function guardarCarritoLS(carrito) {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+function cargarCarritoLS() {
+    return JSON.parse(localStorage.getItem("carrito")) || [];
+}
+function generarId(items) {
+    let max = totalProducto();
+    
+    /*     items.forEach(item => {
+        if (item.id > max) {
+            max = item.id;
+        }
+        }); */
+        
+    return max + 1;
+}
+function totalProducto() {
+    const carrito = cargarCarritoLS();
+    
+    return carrito.length;
+}
+function renderBotonCarrito() {
+    let total = totalProducto();
+    document.getElementById("totalCarrito").innerHTML = total;
+}

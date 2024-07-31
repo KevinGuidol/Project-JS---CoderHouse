@@ -1,25 +1,74 @@
-listaProductosHeladeras.forEach((producto, index) => {
+listaProductosHeladeras.forEach((producto) => {
     const productoHTML = `
-        <!-- ${producto.categoria} -->
-        <div class="categoriaYOrden">
-            <h2 class="categoria">${producto.categoria}</h2>
-            <select name="" id="sortOptions${index + 1}" onchange="" class="sortOptions">
-                <option value="default">Default</option>
-                <option value="MenorAMayor">Menor a mayor</option>
-                <option value="MayorAMenor">Mayor a menor</option>
-            </select>
         </div>
-        <section class="carretelMostrador" id="${index + 1}">
         <article class="item">
-            <button class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="../assets/icons/ShoppingButton.png" alt=""></button>
             <div class="contenedorProducto">
                 <img src="${producto.ruta}" alt="">
                 <p class="descripcionProducto">${producto.nombre}</p>
                 <h2 class="precioProducto">$${producto.precio}</h2>
             </div>
         </article>
-        </section>
     `;
-    console.log(productoHTML);
-    contenedor.innerHTML += productoHTML;
+    contenedorHeladeras.innerHTML += productoHTML;
+});
+
+listaProductosTelevisores.forEach((producto) => {
+    const productoHTML = `
+        </div>
+        <article class="item">
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <div class="contenedorProducto">
+                <img src="${producto.ruta}" alt="">
+                <p class="descripcionProducto">${producto.nombre}</p>
+                <h2 class="precioProducto">$${producto.precio}</h2>
+            </div>
+        </article>
+    `;
+    contenedorTelevisores.innerHTML += productoHTML;
+});
+
+listaProductosLavarropas.forEach((producto) => {
+    const productoHTML = `
+        </div>
+        <article class="item">
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <div class="contenedorProducto">
+                <img src="${producto.ruta}" alt="">
+                <p class="descripcionProducto">${producto.nombre}</p>
+                <h2 class="precioProducto">$${producto.precio}</h2>
+            </div>
+        </article>
+    `;
+    contenedorLavarropas.innerHTML += productoHTML;
+});
+
+listaProductosParlantes.forEach((producto) => {
+    const productoHTML = `
+        </div>
+        <article class="item">
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <div class="contenedorProducto">
+                <img src="${producto.ruta}" alt="">
+                <p class="descripcionProducto">${producto.nombre}</p>
+                <h2 class="precioProducto">$${producto.precio}</h2>
+            </div>
+        </article>
+    `;
+    contenedorParlantes.innerHTML += productoHTML;
+});
+
+listaProductosConsolas.forEach((producto) => {
+    const productoHTML = `
+        </div>
+        <article class="item">
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <div class="contenedorProducto">
+                <img src="${producto.ruta}" alt="">
+                <p class="descripcionProducto">${producto.nombre}</p>
+                <h2 class="precioProducto">$${producto.precio}</h2>
+            </div>
+        </article>
+    `;
+    contenedorConsolas.innerHTML += productoHTML;
 });
