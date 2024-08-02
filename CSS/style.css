@@ -186,7 +186,6 @@ footer h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
 }
 
 #textoCarrito {
@@ -203,6 +202,7 @@ margin: 50px;
     background-color: white;
     width: 80%;
     padding: 20px 30px;
+    margin-bottom: 30px;
     border-radius: 30px;
 }
 .contenedorItemsCarrito {
@@ -213,6 +213,7 @@ padding: 10px 30px;
 width: 95%;
 justify-content: space-around;
 align-items: center;
+border-bottom: 2px solid rgb(235, 235, 235);
 }
 
 #contenedorTotalCarrito {
@@ -253,8 +254,9 @@ align-items: center;
     font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
-    font-size: 15px;
+    font-size: 12px;
     width: 25%;
+    padding-left: 20px;
 }
 
 .precioProductoCarrito {
@@ -270,4 +272,54 @@ align-items: center;
     font-optical-sizing: auto;
     font-style: normal;
     font-size: 15px;
+}
+
+#divCompra {
+    background-color: white;
+    width: 80%;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#botonComprar {
+    background-color: rgb(119, 9, 42);
+    color: white;
+    border: 2px solid rgb(105, 0, 25);
+    width: 230px;
+    height: 50px;
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#botonVaciarCarrito {
+    background-color: rgb(119, 9, 42);
+    color: white;
+    border: 2px solid rgb(105, 0, 25);
+    width: 230px;
+    height: 50px;
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#noProductos {
+    color: rgb(119, 9, 42);
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -44,7 +44,9 @@ const contenedorTelevisores = document.getElementById("carretelMostradorTeleviso
 const contenedorLavarropas = document.getElementById("carretelMostradorLavarropas")
 const contenedorParlantes = document.getElementById("carretelMostradorParlantes")
 const contenedorConsolas = document.getElementById("carretelMostradorConsolas")
-const contenedorCarrito = document.getElementById("contenidoCarrito")
+const productosCarrito = document.getElementById("productosCarrito")
+const numerosubtotal = document.getElementById("contenidoSubTotal")
+const numerototal = document.getElementById("contenidoTotal")
 
 
 function agregarProducto(id) {
@@ -58,6 +60,10 @@ function agregarProducto(id) {
     carrito.push(nuevoProducto);
     
     localStorage.setItem("carrito", JSON.stringify(carrito));
+
+    sumaTotal += producto.precio
+    console.log(sumaTotal);
+    localStorage.setItem("total", sumaTotal)
 }
 
 function guardarCarritoLS(carrito) {
@@ -86,4 +92,23 @@ function totalProducto() {
 function renderBotonCarrito() {
     let total = totalProducto();
     document.getElementById("totalCarrito").innerHTML = total;
+}
+function realizarCompra () {
+    const carrito = cargarCarritoLS()
+    const mapeo = carrito.map((producto) => {producto.id + ". " + producto.nombre + "\n" })
+    sumaTotal = localStorage.getItem("total") || 0
+    alert("Realizaste la compra " + "por $" + sumaTotal ) 
+    localStorage.removeItem("total")
+    sumaTotal = 0
+    localStorage.removeItem("carrito")
+    carrito.splice(0,carrito.length+1)
+    location.reload()
+}
+function vaciarCarrito () {
+    sumaTotal = localStorage.getItem("total") || 0 
+    localStorage.removeItem("total")
+    sumaTotal = 0
+    localStorage.removeItem("carrito")
+    carrito.splice(0,carrito.length+1)
+    location.reload()
 }
