@@ -2,7 +2,7 @@ listaProductosHeladeras.forEach((producto) => {
     const productoHTML = `
         </div>
         <article class="item">
-            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="./assets/icons/ShoppingButton.png" alt=""></button>
             <div class="contenedorProducto">
                 <img src="${producto.ruta}" alt="">
                 <p class="descripcionProducto">${producto.nombre}</p>
@@ -17,7 +17,7 @@ listaProductosTelevisores.forEach((producto) => {
     const productoHTML = `
         </div>
         <article class="item">
-            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="./assets/icons/ShoppingButton.png" alt=""></button>
             <div class="contenedorProducto">
                 <img src="${producto.ruta}" alt="">
                 <p class="descripcionProducto">${producto.nombre}</p>
@@ -32,7 +32,7 @@ listaProductosLavarropas.forEach((producto) => {
     const productoHTML = `
         </div>
         <article class="item">
-            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="./assets/icons/ShoppingButton.png" alt=""></button>
             <div class="contenedorProducto">
                 <img src="${producto.ruta}" alt="">
                 <p class="descripcionProducto">${producto.nombre}</p>
@@ -47,7 +47,7 @@ listaProductosParlantes.forEach((producto) => {
     const productoHTML = `
         </div>
         <article class="item">
-            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="./assets/icons/ShoppingButton.png" alt=""></button>
             <div class="contenedorProducto">
                 <img src="${producto.ruta}" alt="">
                 <p class="descripcionProducto">${producto.nombre}</p>
@@ -62,7 +62,7 @@ listaProductosConsolas.forEach((producto) => {
     const productoHTML = `
         </div>
         <article class="item">
-            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="../assets/icons/ShoppingButton.png" alt=""></button>
+            <button type="button" value="coso" onclick="agregarProducto('${producto.id}')" class="shoppingButton"><img src="./assets/icons/ShoppingButton.png" alt=""></button>
             <div class="contenedorProducto">
                 <img src="${producto.ruta}" alt="">
                 <p class="descripcionProducto">${producto.nombre}</p>
