@@ -4,7 +4,7 @@ const contCarrito = carrito.length
         for (producto of carrito) {
         productosCarrito.innerHTML += `
         <div class="contenedorItemsCarrito">
-            <div class="imgProductoCarrito"><img src="${producto.ruta}" alt=""></div>
+            <div class="imgProductoCarrito"><img src=".${producto.ruta}" alt=""></div>
             <div class="nombreProductoCarrito"><p>${producto.nombre}</p></div>
             <div class="categoriaProductoCarrito"><h2>${producto.categoria}</h2></div>
             <div class="precioProductoCarrito"><h2>$${producto.precio}</h2></div>
