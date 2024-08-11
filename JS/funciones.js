@@ -64,6 +64,21 @@ function agregarProducto(id) {
     sumaTotal += producto.precio
     console.log(sumaTotal);
     localStorage.setItem("total", sumaTotal)
+
+    Toastify({
+        text: `Agregaste ${producto.nombre} al carrito`,
+        duration: 300000,
+        newWindow: false,
+        destination: "../pages/carrito.html" ,
+        gravity: "top",
+        position: "right",
+        avatar: "../assets/icons/cart-70-24.png" ,
+        className: 'notificacionDeCompra',
+        offset: {
+            x: 0 ,
+            y:0
+        },
+    }).showToast();
 }
 
 function guardarCarritoLS(carrito) {
@@ -97,18 +112,45 @@ function realizarCompra () {
     const carrito = cargarCarritoLS()
     const mapeo = carrito.map((producto) => {producto.id + ". " + producto.nombre + "\n" })
     sumaTotal = localStorage.getItem("total") || 0
-    alert("Realizaste la compra " + "por $" + sumaTotal ) 
-    localStorage.removeItem("total")
-    sumaTotal = 0
-    localStorage.removeItem("carrito")
-    carrito.splice(0,carrito.length+1)
-    location.reload()
+    
+    Swal.fire({
+        title: "¡Compra realizada!",
+        text: `Realizó su compra y abonó $` + sumaTotal,
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonText: 'Genial!'
+    }).then((result) => {
+        localStorage.removeItem("total")
+        sumaTotal = 0
+        localStorage.removeItem("carrito")
+        carrito.splice(0,carrito.length+1)
+        location.reload()
+    })
+
 }
 function vaciarCarrito () {
-    sumaTotal = localStorage.getItem("total") || 0 
-    localStorage.removeItem("total")
-    sumaTotal = 0
-    localStorage.removeItem("carrito")
-    carrito.splice(0,carrito.length+1)
-    location.reload()
+    if (carrito.length !== 0){
+        Swal.fire({
+            title: "Carrito vacío",
+            text: 'El carrito fue vaciado correctamente',
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonText: 'Genial!'
+        }).then((result) => {
+            sumaTotal = localStorage.getItem("total") || 0 
+            localStorage.removeItem("total")
+            sumaTotal = 0
+            localStorage.removeItem("carrito")
+            carrito.splice(0,carrito.length+1)
+            location.reload()
+        })
+    }else{
+        Swal.fire({
+            icon:'warning',
+            title: 'Carrito Vacío',
+            text: 'El carrito no contiene ningún producto',
+            confirmButtonText: 'Ok'
+        })
+    }
+
 }

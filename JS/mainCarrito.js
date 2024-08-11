@@ -10,8 +10,9 @@ const contCarrito = carrito.length
             <div class="precioProductoCarrito"><h2>$${producto.precio}</h2></div>
         </div>
         `;
-            numerosubtotal.innerText = "SubTotal = " + sumaTotal;
-            numerototal.innerText = "Total = " + sumaTotal;
+            sumaTotal = localStorage.getItem("total") || 0
+            numerosubtotal.innerText = `SubTotal = $${sumaTotal}`;
+            numerototal.innerText = `Total = $${sumaTotal}`;
         }
     }else {
         productosCarrito.innerHTML = `
