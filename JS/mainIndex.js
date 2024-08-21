@@ -1,4 +1,4 @@
-listaProductosHeladeras.forEach((producto) => {
+/* listaProductosHeladeras.forEach((producto) => {
     const productoHTML = `
         </div>
         <article class="item">
@@ -71,4 +71,4 @@ listaProductosConsolas.forEach((producto) => {
         </article>
     `;
     contenedorConsolas.innerHTML += productoHTML;
-});
+}); */

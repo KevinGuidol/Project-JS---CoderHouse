@@ -5,34 +5,17 @@ let descuento = 1
 let sumaTotal = 0
 //Se aplica un descuento en caso de ser correcto el cupón
 //Array default en caso de no agregar desde el Modo Vendedor
-const listaProductos = [
-    //Heladeras
-    { nombre: "Heladera Cíclica GAFA Blanca 282L", id: "A1", precio: 639999, categoria: "Heladeras", ruta: "./assets/products/A1.jpg"},
-    { nombre: "Heladera Gafa Plateada 374L", id: "A2", precio: 859999, categoria: "Heladeras", ruta: "./assets/products/A2.jpg" },
-    { nombre: "Heladera Samsung No Frost Plateada 320L", id: "A3", precio: 1119999, categoria: "Heladeras", ruta: "./assets/products/A3.jpg" },
-    { nombre: "Heladera Side by Side Samsung Plateada 801L", id: "A4", precio: 3600000, categoria: "Heladeras", ruta: "./assets/products/A4.jpg" },
-    //Televisores
-    { nombre: "Smart TV TCL 43 Pulgadas", id: "B1", precio: 429999 , categoria: "Televisores", ruta: "./assets/products/B1.jpg"},
-    { nombre: "Smart Tv Hisense 50", id: "B2", precio: 649999 ,categoria: "Televisores", ruta: "./assets/products/B2.jpg"},
-    { nombre: "Smart Tv Philips 55", id: "B3", precio: 699999 ,categoria: "Televisores", ruta: "./assets/products/B3.jpg"},
-    { nombre: "Smart TV Philips 50", id: "B4", precio: 639999 ,categoria: "Televisores", ruta: "./assets/products/B4.jpg"},
-    //Lavarropas
-    { nombre: "Lavarropas 8kg Drean", id: "C1", precio: 899999 ,categoria: "Lavarropas", ruta: "./assets/products/C1.jpg"},
-    { nombre: "Lavarropas 9.5kg Samsung", id: "C2", precio: 1169999 ,categoria: "Lavarropas", ruta: "./assets/products/C2.jpg"},
-    { nombre: "Lavarropas 9kg Whirlpool", id: "C3", precio: 1299999 ,categoria: "Lavarropas", ruta: "./assets/products/C3.jpg"},
-    { nombre: "Lavarropas Carga superior 11kg Whirlpool", id: "C4", precio: 999999 ,categoria: "Lavarropas", ruta: "./assets/products/C4.jpg"},
-    //Parlantes
-    { nombre: "Parlante Portátil Bluetooth JBL Negro", id: "D1", precio: 149999 ,categoria: "Parlantes", ruta: "./assets/products/D1.jpg"},
-    { nombre: "Amazon Echo Dot Azul", id: "D2", precio: 129999 ,categoria: "Parlantes", ruta: "./assets/products/D2.jpg"},
-    { nombre: "Xiaomi Mi Outdoor Negro", id: "D3", precio: 45999 ,categoria: "Parlantes", ruta: "./assets/products/D3.jpg"},
-    { nombre: "Parlante Yison Tactil Blanco", id: "D4", precio: 69999 ,categoria: "Parlantes", ruta: "./assets/products/D4.jpg"},
-    //Consolas de videojuegos
-    { nombre: "Nintendo Switch Oled 64Gb ", id: "E1", precio: 644700 ,categoria: "Consolas", ruta: "./assets/products/E1.jpg"},
-    { nombre: "Xbox Series S 1TB", id: "E2", precio: 844200 ,categoria: "Consolas", ruta: "./assets/products/E2.jpg"},
-    { nombre: "Xbox Series X", id: "E3", precio: 1273999 ,categoria: "Consolas", ruta: "./assets/products/E3.jpg"},
-    { nombre: "Sony Playstation 5 1TB", id: "E4", precio: 1258700 ,categoria: "Consolas", ruta: "./assets/products/E4.jpg"}
-];
-//Divisiones de array por categorías de productos
+
+const listaProductos = 
+    fetch('/JSON/productos.json')
+        .then((res) => res.json())
+        .then((data) => {
+            const listaProductos = JSON.parse(data)
+            return listaProductos
+        })
+
+
+        //Divisiones de array por categorías de productos
 listaProductosHeladeras = listaProductos.filter(producto => producto.categoria === "Heladeras")
 listaProductosTelevisores = listaProductos.filter(producto => producto.categoria === "Televisores")
 listaProductosLavarropas = listaProductos.filter(producto => producto.categoria === "Lavarropas")
@@ -48,11 +31,51 @@ const productosCarrito = document.getElementById("productosCarrito")
 const numerosubtotal = document.getElementById("contenidoSubTotal")
 const numerototal = document.getElementById("contenidoTotal")
 
+/* const pedirPosts = async () => {
+const resp = await fetch('https://jsonplaceholder.typicode.com/posts')
+const data = await resp.json()
+console.log(data.find((noticia) => noticia.id === 1)) 
+}
+pedirPosts()
+ */
+
+
+
+
+const lista = document.querySelector('#listado')
+
+function postearEnApi (nuevoProducto) {
+    
+    const producto = JSON.stringify(nuevoProducto)
+
+    fetch('https://jsonplaceholder.typicode.com/posts',
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                title: 'Coderhouse',
+                body: producto,
+                userId: 1,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        .then((resp) => resp.json())
+        .then((data) => {
+            const obj = JSON.parse(data.body)
+            console.log(obj.map((el) =>`Nombre: ${el.nombre}, País: ${el.pais}, Provincia: ${el.provincia}, Edad: ${el.edad} Años`));
+            
+        })
+}
+//    Prueba postearEnApi
+postearEnApi([{nombre:'Kevin', provincia:'Mendoza', pais:'Argentina',edad:22}])
+
+
 
 function agregarProducto(id) {
     const producto = listaProductos.find(item => item.id === id);
     const carrito = cargarCarritoLS();
-    
+
     // Generar un nuevo ID para el producto
     const nuevoId = generarId(carrito);
     const nuevoProducto = { ...producto, id: nuevoId };
@@ -67,12 +90,12 @@ function agregarProducto(id) {
 
     Toastify({
         text: `Agregaste ${producto.nombre} al carrito`,
-        duration: 300000,
+        duration: 3000,
         newWindow: false,
         destination: "../pages/carrito.html" ,
         gravity: "top",
         position: "right",
-        avatar: "../assets/icons/cart-70-24.png" ,
+        avatar: "../assets/icons/ShoppingCart.png" ,
         className: 'notificacionDeCompra',
         offset: {
             x: 0 ,
