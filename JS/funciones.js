@@ -1,26 +1,35 @@
-//Entrando al Modo Comprador
-let cuponDescuento = "D612"
-//Se declaran las siguientes variables para utilizarlas al terminar la compra.
-let descuento = 1
-let sumaTotal = 0
-//Se aplica un descuento en caso de ser correcto el cupón
+let sumaTotal = 0;
+
 //Array default en caso de no agregar desde el Modo Vendedor
+let listaProductos;
+let listaProductosHeladeras;
+let listaProductosConsolas;
+let listaProductosLavarropas;
+let listaProductosTelevisores;
+let listaProductosParlantes;
 
-const listaProductos = 
-    fetch('/JSON/productos.json')
-        .then((res) => res.json())
-        .then((data) => {
-            const listaProductos = JSON.parse(data)
-            return listaProductos
-        })
+const obtenerListaProductos = async () => {
+    const res = await fetch('JSON/productos.json');
+    const data = await res.json();
+    return data;
+}
+/* obtenerListaProductos().then(
+console.log(obtenerListaProductos)
+) */
+const filtrarCategorias = (productos)=>{
+    //Divisiones de array por categorías de productos
+    listaProductosHeladeras = productos.filter(producto => producto.categoria === "Heladeras")
+    listaProductosTelevisores = productos.filter(producto => producto.categoria === "Televisores")
+    listaProductosLavarropas = productos.filter(producto => producto.categoria === "Lavarropas")
+    listaProductosParlantes = productos.filter(producto => producto.categoria === "Parlantes")
+    listaProductosConsolas = productos.filter(producto => producto.categoria === "Consolas")
+}
 
 
-        //Divisiones de array por categorías de productos
-listaProductosHeladeras = listaProductos.filter(producto => producto.categoria === "Heladeras")
-listaProductosTelevisores = listaProductos.filter(producto => producto.categoria === "Televisores")
-listaProductosLavarropas = listaProductos.filter(producto => producto.categoria === "Lavarropas")
-listaProductosParlantes = listaProductos.filter(producto => producto.categoria === "Parlantes")
-listaProductosConsolas = listaProductos.filter(producto => producto.categoria === "Consolas")
+const clasificarProductos = async ()=>{
+    listaProductos = await obtenerListaProductos();
+    filtrarCategorias(listaProductos);
+}
 
 const contenedorHeladeras = document.getElementById("carretelMostradorHeladeras")
 const contenedorTelevisores = document.getElementById("carretelMostradorTelevisores")
@@ -31,45 +40,36 @@ const productosCarrito = document.getElementById("productosCarrito")
 const numerosubtotal = document.getElementById("contenidoSubTotal")
 const numerototal = document.getElementById("contenidoTotal")
 
-/* const pedirPosts = async () => {
-const resp = await fetch('https://jsonplaceholder.typicode.com/posts')
-const data = await resp.json()
-console.log(data.find((noticia) => noticia.id === 1)) 
+//Página carrito
+
+
+async function renderCarrito() {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || []
+    const contCarrito = carrito.length
+    productosCarrito.innerHTML = ``
+    if (contCarrito != 0) {
+        for (producto of carrito) {
+                productosCarrito.innerHTML += `
+                <div class="contenedorItemsCarrito">
+                    <div class="imgProductoCarrito"><img src=".${producto.ruta}" alt=""></div>
+                    <div class="nombreProductoCarrito"><p>${producto.nombre}</p></div>
+                    <div class="categoriaProductoCarrito"><h2>${producto.categoria}</h2></div>
+                    <div class="precioProductoCarrito"><h2>$${producto.precio}</h2></div>
+                </div>
+        `;
+        sumaTotal = localStorage.getItem("total") || 0
+        numerosubtotal.innerText = `SubTotal = $${sumaTotal}`;
+        numerototal.innerText = `Total = $${sumaTotal}`;
+        }
+}else {
+    productosCarrito.innerHTML = `
+    <h2 id="noProductos">no hay ningún producto en el carrito</h2>
+    `;
 }
-pedirPosts()
- */
-
-
-
-
-const lista = document.querySelector('#listado')
-
-function postearEnApi (nuevoProducto) {
-    
-    const producto = JSON.stringify(nuevoProducto)
-
-    fetch('https://jsonplaceholder.typicode.com/posts',
-        {
-            method: 'POST',
-            body: JSON.stringify({
-                title: 'Coderhouse',
-                body: producto,
-                userId: 1,
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-        .then((resp) => resp.json())
-        .then((data) => {
-            const obj = JSON.parse(data.body)
-            console.log(obj.map((el) =>`Nombre: ${el.nombre}, País: ${el.pais}, Provincia: ${el.provincia}, Edad: ${el.edad} Años`));
-            
-        })
 }
-//    Prueba postearEnApi
-postearEnApi([{nombre:'Kevin', provincia:'Mendoza', pais:'Argentina',edad:22}])
 
+
+// Interacción del usuario.
 
 
 function agregarProducto(id) {
@@ -124,7 +124,6 @@ function generarId(items) {
 }
 function totalProducto() {
     const carrito = cargarCarritoLS();
-    
     return carrito.length;
 }
 function renderBotonCarrito() {
@@ -133,7 +132,6 @@ function renderBotonCarrito() {
 }
 function realizarCompra () {
     const carrito = cargarCarritoLS()
-    const mapeo = carrito.map((producto) => {producto.id + ". " + producto.nombre + "\n" })
     sumaTotal = localStorage.getItem("total") || 0
     
     Swal.fire({
@@ -147,9 +145,12 @@ function realizarCompra () {
         sumaTotal = 0
         localStorage.removeItem("carrito")
         carrito.splice(0,carrito.length+1)
-        location.reload()
-    })
+        renderCarrito();
+        sumaTotal =  0
+        numerosubtotal.innerText = `SubTotal = $${sumaTotal}`;
+        numerototal.innerText = `Total = $${sumaTotal}`;
 
+    })
 }
 function vaciarCarrito () {
     if (carrito.length !== 0){
@@ -165,7 +166,10 @@ function vaciarCarrito () {
             sumaTotal = 0
             localStorage.removeItem("carrito")
             carrito.splice(0,carrito.length+1)
-            location.reload()
+            renderCarrito();
+            sumaTotal =  0
+            numerosubtotal.innerText = `SubTotal = $${sumaTotal}`;
+            numerototal.innerText = `Total = $${sumaTotal}`;
         })
     }else{
         Swal.fire({
@@ -175,5 +179,123 @@ function vaciarCarrito () {
             confirmButtonText: 'Ok'
         })
     }
+}
 
+
+function ordenarProductos (tipoAOrdenar){
+    if (tipoAOrdenar == "heladeras") {
+        // Mayor a Menor
+        const criterio = document.getElementById("ordenHeladeras").value //()
+        listaProductosHeladeras = listaProductosHeladeras.sort((a,b) => {
+        if (criterio == "MenorAMayor") return a.precio - b. precio
+        if (criterio == "MayorAMenor") return b.precio - a.precio
+        })
+        contenedorHeladeras.innerHTML = ``
+        listaProductosHeladeras.forEach((producto) => {
+            const productoHTML = `
+                </div>
+                <article class="item">
+                    <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="./assets/icons/ShoppingButton.png" alt=""></button>
+                    <div class="contenedorProducto">
+                        <img src="${producto.ruta}" alt="">
+                        <p class="descripcionProducto">${producto.nombre}</p>
+                        <h2 class="precioProducto">$${producto.precio}</h2>
+                    </div>
+                </article>
+            `;
+            contenedorHeladeras.innerHTML += productoHTML;
+        });
+    } 
+    if (tipoAOrdenar == "televisores") {
+        // Mayor a Menor
+        const criterio = document.getElementById("ordenTelevisores").value //()
+        listaProductosTelevisores = listaProductosTelevisores.sort((a,b) => {
+        if (criterio == "MenorAMayor") return a.precio - b. precio
+        if (criterio == "MayorAMenor") return b.precio - a.precio
+        })
+        contenedorTelevisores.innerHTML = ``
+        listaProductosTelevisores.forEach((producto) => {
+            const productoHTML = `
+                </div>
+                <article class="item">
+                    <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="./assets/icons/ShoppingButton.png" alt=""></button>
+                    <div class="contenedorProducto">
+                        <img src="${producto.ruta}" alt="">
+                        <p class="descripcionProducto">${producto.nombre}</p>
+                        <h2 class="precioProducto">$${producto.precio}</h2>
+                    </div>
+                </article>
+            `;
+            contenedorTelevisores.innerHTML += productoHTML;
+        });
+    } 
+    if (tipoAOrdenar == "lavarropas") {
+        // Mayor a Menor
+        const criterio = document.getElementById("ordenLavarropas").value //()
+        listaProductosLavarropas = listaProductosLavarropas.sort((a,b) => {
+        if (criterio == "MenorAMayor") return a.precio - b. precio
+        if (criterio == "MayorAMenor") return b.precio - a.precio
+        })
+        contenedorLavarropas.innerHTML = ``
+        listaProductosLavarropas.forEach((producto) => {
+            const productoHTML = `
+                </div>
+                <article class="item">
+                    <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="./assets/icons/ShoppingButton.png" alt=""></button>
+                    <div class="contenedorProducto">
+                        <img src="${producto.ruta}" alt="">
+                        <p class="descripcionProducto">${producto.nombre}</p>
+                        <h2 class="precioProducto">$${producto.precio}</h2>
+                    </div>
+                </article>
+            `;
+            contenedorLavarropas.innerHTML += productoHTML;
+        });
+    } 
+    if (tipoAOrdenar == "parlantes") {
+        // Mayor a Menor
+        const criterio = document.getElementById("ordenParlantes").value //()
+        listaProductosParlantes = listaProductosParlantes.sort((a,b) => {
+        if (criterio == "MenorAMayor") return a.precio - b. precio
+        if (criterio == "MayorAMenor") return b.precio - a.precio
+        })
+        contenedorParlantes.innerHTML = ``
+        listaProductosParlantes.forEach((producto) => {
+            const productoHTML = `
+                </div>
+                <article class="item">
+                    <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="./assets/icons/ShoppingButton.png" alt=""></button>
+                    <div class="contenedorProducto">
+                        <img src="${producto.ruta}" alt="">
+                        <p class="descripcionProducto">${producto.nombre}</p>
+                        <h2 class="precioProducto">$${producto.precio}</h2>
+                    </div>
+                </article>
+            `;
+            contenedorParlantes.innerHTML += productoHTML;
+        });
+    } 
+    if (tipoAOrdenar == "consolas") {
+        // Mayor a Menor
+        const criterio = document.getElementById("ordenConsolas").value //()
+        listaProductosConsolas = listaProductosConsolas.sort((a,b) => {
+        if (criterio == "MenorAMayor") return a.precio - b. precio
+        if (criterio == "MayorAMenor") return b.precio - a.precio
+        })
+        contenedorConsolas.innerHTML = ``
+        listaProductosConsolas.forEach((producto) => {
+            const productoHTML = `
+                </div>
+                <article class="item">
+                    <button type="button" value="coso" onclick="agregarProducto('${producto.id}')"class="shoppingButton" ><img src="./assets/icons/ShoppingButton.png" alt=""></button>
+                    <div class="contenedorProducto">
+                        <img src="${producto.ruta}" alt="">
+                        <p class="descripcionProducto">${producto.nombre}</p>
+                        <h2 class="precioProducto">$${producto.precio}</h2>
+                    </div>
+                </article>
+            `;
+            contenedorConsolas.innerHTML += productoHTML;
+        });
+    } 
 }
